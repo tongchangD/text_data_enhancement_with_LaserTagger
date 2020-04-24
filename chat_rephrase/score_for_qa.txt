@@ -1,0 +1,47 @@
+1200
+Exact score:     12.843
+SARI score:      51.313
+ KEEP score:     76.046
+ ADDITION score: 20.086
+ DELETION score: 57.808
+cost time 0.337063 h
+
+房山 Restoring parameters from /home/wzk/Mywork/corpus/rephrase_corpus/output/models/wikisplit_experiment_name/model.ckpt-3643
+Exact score:     13.672
+SARI score:      53.450
+ KEEP score:     77.125
+ ADDITION score: 21.678
+ DELETION score: 61.546
+cost time 0.260398 h
+继续ｔｒａｉｎ　ｅｐｏｃｈ从７.0改为３０．０
+Saving checkpoints for 36436 into /home/wzk/Mywork/corpus/rephrase_corpus/output/models/wikisplit_experiment_name/model.ckpt.
+Exact score:     19.414
+SARI score:      56.749
+ KEEP score:     78.622
+ ADDITION score: 26.927
+ DELETION score: 64.697
+cost time 0.260367 h
+model.ckpt-35643
+Exact score:     19.440
+SARI score:      56.725
+ KEEP score:     78.620
+ ADDITION score: 26.917
+ DELETION score: 64.638
+cost time 0.259561 h
+Restoring parameters from /home/wzk/Mywork/corpus/rephrase_corpus/output/models/wikisplit_experiment_name/model.ckpt-62436
+Exact score:     20.347
+SARI score:      57.107
+ KEEP score:     78.693
+ ADDITION score: 27.379
+ DELETION score: 65.250
+cost time 0.575784 h
+
+
+旧的
+完善大小写的处理规则
+Exact score:     29.283
+SARI score:      64.002
+ KEEP score:     84.942
+ ADDITION score: 38.128
+ DELETION score: 68.935
+cost time 0.41796 h
