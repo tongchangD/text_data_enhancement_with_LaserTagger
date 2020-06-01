@@ -23,126 +23,126 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
 文件需求 
     bert预训练的tensorflow 模型
 文件框架格局如下：
-	├── chat_rephrase
-	│   ├── __init__.py
-	│   ├── predict_for_chat.py
-	│   └── score_for_qa.txt
-	├── configs
-	│   ├── lasertagger_config_base.json
-	│   └── lasertagger_config.json
-	├── data
-	│   ├── LCQMC
-	│   │   ├── dev.txt
-	│   │   ├── test.txt
-	│   │   └── train.txt
-	│   ├── lcqmc.txt
-	│   ├── QQ
-	│   │   └── Q_Q.txt
-	│   ├── QQ.txt
-	│   ├── RoBERTa-tiny-clue
-	│   │   ├── bert_config.json
-	│   │   ├── bert_model.ckpt.data-00000-of-00001
-	│   │   ├── bert_model.ckpt.index
-	│   │   ├── bert_model.ckpt.meta
-	│   │   ├── checkpoint
-	│   │   └── vocab.txt
-	│   ├── test.txt
-	│   ├── train.txt
-	│   └── tune.txt
-	├── domain_rephrase
-	│   ├── __init__.py
-	│   ├── predict_for_domain.py
-	│   └── rephrase_for_domain.sh
-	├── get_pairs_chinese
-	│   ├── curLine_file.py
-	│   ├── get_text_pair_lcqmc.py
-	│   ├── get_text_pair.py
-	│   ├── get_text_pair_sv.py
-	│   ├── __init__.py
-	│   ├── merge_split_corpus.py
-	├── official_transformer
-	│   ├── attention_layer.py
-	│   ├── beam_search.py
-	│   ├── embedding_layer.py
-	│   ├── ffn_layer.py
-	│   ├── __init__.py
-	│   ├── model_params.py
-	│   ├── model_utils.py
-	│   ├── tpu.py
-	│   └── transformer.py
-	├── output
-	│   ├── label_map.txt
-	│   ├── label_map.txt.log
-	│   ├── models
-	│   │   └── wikisplit_experiment_name
-	│   │       ├── 1587693553
-	│   │       │   ├── saved_model.pb
-	│   │       │   └── variables
-	│   │       │       ├── variables.data-00000-of-00001
-	│   │       │       └── variables.index
-	│   │       ├── checkpoint
-	│   │       ├── events.out.tfevents.1587638931.tcd-All-Series
-	│   │       ├── graph.pbtxt
-	│   │       ├── model.ckpt-3643.data-00000-of-00001
-	│   │       ├── model.ckpt-3643.index
-	│   │       ├── model.ckpt-3643.meta
-	│   │       └── pred.tsv
-	│   ├── train.tf_record
-	│   ├── train.tf_record.num_examples.txt
-	│   ├── tune.tf_record
-	│   └── tune.tf_record.num_examples.txt
-	├── qa_rephrase
-	│   ├── __init__.py
-	│   └── predict_for_qa.py
-	├── rephrase_server
-	│   ├── __init__.py
-	│   ├── rephrase_server_flask.py
-	│   └── test_server.py
-	├── skill_rephrase
-	│   ├── __init__.py
-	│   └── predict_for_skill.py
-	├── __init__.py
-	├── AR_architecture.png
-	├── bert_example.py
-	├── bert_example_test.py
-	├── compute_lcs.py
-	├── config.json
-	├── CONTRIBUTING.md
-	├── curLine_file.py
-	├── LICENSE
-	├── phrase_vocabulary_optimization1.py
-	├── phrase_vocabulary_optimizationdada.py
-	├── phrase_vocabulary_optimization_test.py
-	├── prediction.txt
-	├── predict_main.py
-	├── predict_utils.py
-	├── predict_utils_test.py
-	├── preprocess_main.py
-	├── README.md
-	├── rephrase_for_chat.sh
-	├── rephrase_for_qa.sh
-	├── rephrase_for_skill.sh
-	├── rephrase_server.sh
-	├── rephrase.sh
-	├── requirements.txt
-	├── run_lasertagger.py
-	├── run_lasertagger_test.py
-	├── run_lasertagger_utils.py
-	├── run_lasertagger_utils_test.py
-	├── sari_hook.py
-	├── score_lib.py
-	├── score_lib_test.py
-	├── score_main.py
-	├── sentence_fusion_task.png
-	├── tagging_converter.py
-	├── tagging_converter_test.py
-	├── tagging.py
-	├── tagging_test.py
-	├── train.txt
-	├── transformer_decoder.py
-	├── tune.txt
-	├── utils.py
-	└── utils_test.py
+	├── chat_rephrase  
+	│   ├── __init__.py  
+	│   ├── predict_for_chat.py  
+	│   └── score_for_qa.txt  
+	├── configs  
+	│   ├── lasertagger_config_base.json  
+	│   └── lasertagger_config.json  
+	├── data  
+	│   ├── LCQMC  
+	│   │   ├── dev.txt  
+	│   │   ├── test.txt  
+	│   │   └── train.txt  
+	│   ├── lcqmc.txt  
+	│   ├── QQ  
+	│   │   └── Q_Q.txt  
+	│   ├── QQ.txt  
+	│   ├── RoBERTa-tiny-clue  
+	│   │   ├── bert_config.json  
+	│   │   ├── bert_model.ckpt.data-00000-of-00001  
+	│   │   ├── bert_model.ckpt.index  
+	│   │   ├── bert_model.ckpt.meta  
+	│   │   ├── checkpoint  
+	│   │   └── vocab.txt  
+	│   ├── test.txt  
+	│   ├── train.txt  
+	│   └── tune.txt  
+	├── domain_rephrase  
+	│   ├── __init__.py  
+	│   ├── predict_for_domain.py  
+	│   └── rephrase_for_domain.sh  
+	├── get_pairs_chinese  
+	│   ├── curLine_file.py  
+	│   ├── get_text_pair_lcqmc.py  
+	│   ├── get_text_pair.py  
+	│   ├── get_text_pair_sv.py  
+	│   ├── __init__.py  
+	│   ├── merge_split_corpus.py  
+	├── official_transformer  
+	│   ├── attention_layer.py  
+	│   ├── beam_search.py  
+	│   ├── embedding_layer.py  
+	│   ├── ffn_layer.py  
+	│   ├── __init__.py  
+	│   ├── model_params.py  
+	│   ├── model_utils.py  
+	│   ├── tpu.py  
+	│   └── transformer.py  
+	├── output  
+	│   ├── label_map.txt  
+	│   ├── label_map.txt.log  
+	│   ├── models  
+	│   │   └── wikisplit_experiment_name  
+	│   │       ├── 1587693553  
+	│   │       │   ├── saved_model.pb  
+	│   │       │   └── variables  
+	│   │       │       ├── variables.data-00000-of-00001  
+	│   │       │       └── variables.index  
+	│   │       ├── checkpoint  
+	│   │       ├── events.out.tfevents.1587638931.tcd-All-Series  
+	│   │       ├── graph.pbtxt  
+	│   │       ├── model.ckpt-3643.data-00000-of-00001  
+	│   │       ├── model.ckpt-3643.index  
+	│   │       ├── model.ckpt-3643.meta  
+	│   │       └── pred.tsv  
+	│   ├── train.tf_record  
+	│   ├── train.tf_record.num_examples.txt  
+	│   ├── tune.tf_record  
+	│   └── tune.tf_record.num_examples.txt  
+	├── qa_rephrase  
+	│   ├── __init__.py  
+	│   └── predict_for_qa.py  
+	├── rephrase_server  
+	│   ├── __init__.py  
+	│   ├── rephrase_server_flask.py  
+	│   └── test_server.py  
+	├── skill_rephrase  
+	│   ├── __init__.py  
+	│   └── predict_for_skill.py  
+	├── __init__.py  
+	├── AR_architecture.png  
+	├── bert_example.py  
+	├── bert_example_test.py  
+	├── compute_lcs.py  
+	├── config.json  
+	├── CONTRIBUTING.md  
+	├── curLine_file.py  
+	├── LICENSE  
+	├── phrase_vocabulary_optimization1.py  
+	├── phrase_vocabulary_optimizationdada.py  
+	├── phrase_vocabulary_optimization_test.py  
+	├── prediction.txt  
+	├── predict_main.py  
+	├── predict_utils.py  
+	├── predict_utils_test.py  
+	├── preprocess_main.py  
+	├── README.md  
+	├── rephrase_for_chat.sh  
+	├── rephrase_for_qa.sh  
+	├── rephrase_for_skill.sh  
+	├── rephrase_server.sh  
+	├── rephrase.sh  
+	├── requirements.txt  
+	├── run_lasertagger.py  
+	├── run_lasertagger_test.py  
+	├── run_lasertagger_utils.py  
+	├── run_lasertagger_utils_test.py  
+	├── sari_hook.py  
+	├── score_lib.py  
+	├── score_lib_test.py  
+	├── score_main.py  
+	├── sentence_fusion_task.png  
+	├── tagging_converter.py  
+	├── tagging_converter_test.py  
+	├── tagging.py  
+	├── tagging_test.py  
+	├── train.txt  
+	├── transformer_decoder.py  
+	├── tune.txt  
+	├── utils.py  
+	└── utils_test.py  
 
 代码跑通顺序：
 第一种方法：
@@ -253,6 +253,11 @@ CPU上耗时0.5小时，平均复述一句话需要0.72秒。
 可以对训练语料中的text_a先进行随机的swag操作，相应地脚本中enable_swap_tag改为true，再训练模型将其改写为text_b;  
 实际应用或测试时同样将原始文本text_a先进行随机的swag操作，然后利用模型改写为text_b;  
 因为训练语料中text_a是不通顺，但text_b是通顺的，所以实际应用或测试时仍然会得到通顺的复述结果。  
+
+六.数据集
+1.由于不少人咨询我数据集的问题，现将数据集地址贴在下面
+You can download LCQMC data set from https://download.csdn.net/download/tcd1112/12357994,But other data is the company data can't give you.
+You can also leave your E-mail, I will send you LCQMC data
 
 ## How to Cite LaserTagger
 
