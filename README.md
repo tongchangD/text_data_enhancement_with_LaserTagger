@@ -228,9 +228,7 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
 四．实验效果  
 1. 在公开数据集Wiki Split上复现模型：  
 Wiki Split数据集是英文语料，训练模型将一句话拆分成两句话，并保持语义一致，语法合理，语义连贯通顺，如下图所示。  
-
-<p align="center"><img width="50%" src="sentence_fusion_task.png" /></p>
-
+![image](https://github.com/tongchangD/text_data_enhancement_with_LaserTagger/blob/master/sentence_fusion_task.png)
 Exact　score=15,SARI score=61.5,KEEP score=93,ADDITION score=32,DELETION score=59,  
 基本与论文中的Exact score=15.2；SARI score=61.7一致（这些分数均为越高越好）。  
 2. 在自己构造的中文数据集训练文本复述模型：  
