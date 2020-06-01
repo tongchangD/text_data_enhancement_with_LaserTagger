@@ -149,10 +149,10 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
     修改运行rephrase.sh
 第二种方法详解：
     第一步：制作训练测试验证集
-        python get_pairs_chinese/get_text_pair_lcqmc.py 获得lcqmc中的文本复述语料(语义一致的文本对，且字面表述差异不能过大，第三列为最长公共子串长度与总长度的比值)
-        只需要修改lcqmc的目录位置即可
-        python get_pairs_chinese/get_text_pair.py 可根据自己的预料获得文本复述语料(第三列为最长公共子串长度与总长度的比值)
-        再运行merge_split_corpus.py 将 结果数据 按比例划分 训练、测试、验证集    
+        python get_pairs_chinese/get_text_pair_lcqmc.py 获得lcqmc中的文本复述语料(语义一致的文本对，且字面表述差异不能过大，第三列为最长公共子串长度与总长度的比值)  
+        只需要修改lcqmc的目录位置即可  
+        python get_pairs_chinese/get_text_pair.py 可根据自己的预料获得文本复述语料(第三列为最长公共子串长度与总长度的比值)  
+        再运行merge_split_corpus.py 将 结果数据 按比例划分 训练、测试、验证集  
     第二步：短语_词汇表_优化
         python phrase_vocabulary_optimization.py \
         --input_file=./data/train.txt \
@@ -160,9 +160,9 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
         --vocabulary_size=500 \
         --max_input_examples=1000000  \
         --enable_swap_tag=false \
-        --output_file=./output/label_map.txt
-    第三步：
-        1、制作后续训练模型的验证集
+        --output_file=./output/label_map.txt  
+    第三步：  
+        1、制作后续训练模型的验证集  
         python preprocess_main.py \
         --input_file=./data/tune.txt \
         --input_format=wikisplit \
@@ -171,7 +171,7 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
         --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \
         --max_seq_length=40  \
         --output_arbitrary_targets_for_infeasible_examples=false
-        2、制作后续训练模型的训练集
+        2、制作后续训练模型的训练集  
         python preprocess_main.py \
         --input_file=./data/train.txt \
         --input_format=wikisplit \
@@ -179,9 +179,9 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
         --label_map_file=./output/label_map.txt \
         --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \
         --max_seq_length=40  \
-        --output_arbitrary_targets_for_infeasible_examples=false
-    第四步：
-        1、训练模型
+        --output_arbitrary_targets_for_infeasible_examples=false  
+    第四步：  
+        1、训练模型  
         python run_lasertagger.py \
         --training_file=./output/train.tf_record \
         --eval_file=./output/tune.tf_record \
@@ -195,15 +195,15 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
         --save_checkpoints_steps=200 \
         --max_seq_length=40 \
         --num_train_examples=319200 \
-        --num_eval_examples=5000
-        2、 模型整理
+        --num_eval_examples=5000  
+        2、 模型整理  
         python run_lasertagger.py \
         --label_map_file=./output/label_map.txt \
         --model_config_file=./configs/lasertagger_config.json \
         --output_dir=./output/models/wikisplit_experiment_name \
         --do_export=true \
-        --export_path=./output/models/wikisplit_experiment_name
-    第五步 根据test文件进行预测
+        --export_path=./output/models/wikisplit_experiment_name  
+    第五步 根据test文件进行预测  
         python predict_main.py \
         --input_file=./data/test.txt \
         --input_format=wikisplit \
@@ -211,13 +211,13 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
         --label_map_file=./output/label_map.txt  \
         --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \
         --max_seq_length=40 \
-        --saved_model=./output/models/wikisplit_experiment_name/1587693553
-        # 解析，这应该是最后保存的模型文件名称 可以考如下语句获得   
+        --saved_model=./output/models/wikisplit_experiment_name/1587693553  
+        # 解析，这应该是最后保存的模型文件名称 可以考如下语句获得     
         # (ls "./output/models/wikisplit_experiment_name/" | grep -v "temp-" | sort -r | head -1)
-    第六步 对第五步预测的文件进行打分。
-        python score_main.py --prediction_file=./output/models/wikisplit_experiment_name/pred.tsv
+    第六步 对第五步预测的文件进行打分。  
+        python score_main.py --prediction_file=./output/models/wikisplit_experiment_name/pred.tsv  
 
-#根据自己情况修改脚本"rephrase.sh"中2个文件夹的路径，然后运行  sh rephrase.sh
+#根据自己情况修改脚本"rephrase.sh"中2个文件夹的路径，然后运行  sh rephrase.sh  
 #脚本中的变量HOST_NAME是作者为了方便设定路径使用的，请根据自己情况修改；  
 #如果只是离线的对文本进行批量的泛化，可以注释脚本中其他部分，只用predict_main.py就可以满足需求。  
 3.启动文本复述服务  根据自己需要，可选  
