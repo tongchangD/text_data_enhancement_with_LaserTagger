@@ -254,22 +254,7 @@ CPU上耗时0.5小时，平均复述一句话需要0.72秒。
 实际应用或测试时同样将原始文本text_a先进行随机的swag操作，然后利用模型改写为text_b;  
 因为训练语料中text_a是不通顺，但text_b是通顺的，所以实际应用或测试时仍然会得到通顺的复述结果。  
 
-六.数据集
-1.由于不少人咨询我数据集的问题，现将数据集地址贴在下面
+六.数据集  
+1.由于不少人咨询我数据集的问题，现将数据集地址贴在下面  
 You can download LCQMC data set from https://download.csdn.net/download/tcd1112/12357994,But other data is the company data can't give you.
-You can also leave your E-mail, I will send you LCQMC data
-
-## How to Cite LaserTagger
-
-```
-@inproceedings{malmi2019lasertagger,
-  title={Encode, Tag, Realize: High-Precision Text Editing},
-  author={Eric Malmi and Sebastian Krause and Sascha Rothe and Daniil Mirylenka and Aliaksei Severyn},
-  booktitle={EMNLP-IJCNLP},
-  year={2019}
-}
-```
-
-## License
-
-Apache 2.0; see [LICENSE](LICENSE) for details.
+You can also leave your E-mail, I will send you LCQMC data  
