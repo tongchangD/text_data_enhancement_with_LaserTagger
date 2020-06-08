@@ -21,7 +21,9 @@ B.推理效率：原代码每次只对一个文本进行复述，改成每次对
 参见"requirements.txt", "rephrase.sh"
 2.训练和评测模型  
 文件需求 
-    bert预训练的tensorflow 模型
+    bert预训练的tensorflow 模型  
+    采用RoBERTa-tiny-clue（中文版）预训练模型。  [网址] (https://storage.googleapis.com/cluebenchmark/pretrained_models/RoBERTa-tiny-clue.zip)
+    如果想采用其他预训练模型，请修改“configs/lasertagger_config.json".  
 
 代码跑通顺序：
 第一种方法：
