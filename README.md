@@ -136,7 +136,7 @@ CPU上耗时0.5小时，平均复述一句话需要0.72秒。
 
 六.数据集  
 1.由于不少人咨询我数据集的问题，现将数据集地址贴在下面  
-You can download LCQMC data set from https://download.csdn.net/download/tcd1112/12357994,But other data is the company data can't give you.
+You can download LCQMC data set from https://download.csdn.net/download/tcd1112/12357994 ,But other data is the company data can't give you.
 You can also leave your E-mail, I will send you LCQMC data  
 
 七.文件 tree树如下：  
