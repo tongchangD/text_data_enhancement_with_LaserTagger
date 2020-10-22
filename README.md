@@ -5,7 +5,7 @@
 复述的结果可用于数据增强，文本泛化，从而增加特定场景的语料规模，提高模型泛化能力。  
 
 
-二．模型介绍
+二．模型介绍  
 
 谷歌在文献《Encode, Tag, Realize: High-Precision Text Editing》中采用序列标注的框架进行文本编辑，在文本拆分和自动摘要任务上取得了最佳效果。  
 在同样采用BERT作为编码器的条件下，本方法相比于Seq2Seq的方法具有更高的可靠度，更快的训练和推理效率，且在语料规模较小的情况下优势更明显。  
@@ -17,81 +17,81 @@ A.分词方式：原代码针对英文，以空格为间隔分成若干词。现
 B.推理效率：原代码每次只对一个文本进行复述，改成每次对batch_size个文本进行复述，推理效率提高6倍。  
 
 三.文件说明和实验步骤  
-1.安装python模块
-参见"requirements.txt", "rephrase.sh"
+1.安装python模块  
+参见"requirements.txt", "rephrase.sh"  
 2.训练和评测模型  
-文件需求 
+文件需求   
     bert预训练的tensorflow 模型  
-    采用RoBERTa-tiny-clue（中文版）预训练模型。
+    采用RoBERTa-tiny-clue（中文版）预训练模型。  
     [网址](https://storage.googleapis.com/cluebenchmark/pretrained_models/RoBERTa-tiny-clue.zip)  
     如果想采用其他预训练模型，请修改“configs/lasertagger_config.json".  
 
-代码跑通顺序：
-第一种方法：
-    修改运行rephrase.sh
-第二种方法详解：
-    第一步：制作训练测试验证集
+代码跑通顺序：  
+第一种方法：  
+    修改运行rephrase.sh  
+第二种方法详解：  
+    第一步：制作训练测试验证集  
         python get_pairs_chinese/get_text_pair_lcqmc.py 获得lcqmc中的文本复述语料(语义一致的文本对，且字面表述差异不能过大，第三列为最长公共子串长度与总长度的比值)  
         只需要修改lcqmc的目录位置即可  
         python get_pairs_chinese/get_text_pair.py 可根据自己的预料获得文本复述语料(第三列为最长公共子串长度与总长度的比值)  
         再运行merge_split_corpus.py 将 结果数据 按比例划分 训练、测试、验证集  
     第二步：短语_词汇表_优化
-        python phrase_vocabulary_optimization.py \
-        --input_file=./data/train.txt \
-        --input_format=wikisplit \
-        --vocabulary_size=500 \
-        --max_input_examples=1000000  \
-        --enable_swap_tag=false \
+        python phrase_vocabulary_optimization.py \  
+        --input_file=./data/train.txt \  
+        --input_format=wikisplit \  
+        --vocabulary_size=500 \  
+        --max_input_examples=1000000  \  
+        --enable_swap_tag=false \  
         --output_file=./output/label_map.txt  
     第三步：  
         1、制作后续训练模型的验证集  
-        python preprocess_main.py \
-        --input_file=./data/tune.txt \
-        --input_format=wikisplit \
-        --output_tfrecord=./output/tune.tf_record \
-        --label_map_file=./output/label_map.txt \
-        --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \
+        python preprocess_main.py \  
+        --input_file=./data/tune.txt \  
+        --input_format=wikisplit \  
+        --output_tfrecord=./output/tune.tf_record \  
+        --label_map_file=./output/label_map.txt \  
+        --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \  
         --max_seq_length=40  \
-        --output_arbitrary_targets_for_infeasible_examples=false
+        --output_arbitrary_targets_for_infeasible_examples=false  
         2、制作后续训练模型的训练集  
-        python preprocess_main.py \
-        --input_file=./data/train.txt \
-        --input_format=wikisplit \
-        --output_tfrecord=./output/train.tf_record \
-        --label_map_file=./output/label_map.txt \
-        --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \
+        python preprocess_main.py \  
+        --input_file=./data/train.txt \  
+        --input_format=wikisplit \  
+        --output_tfrecord=./output/train.tf_record \  
+        --label_map_file=./output/label_map.txt \  
+        --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \  
         --max_seq_length=40  \
         --output_arbitrary_targets_for_infeasible_examples=false  
     第四步：  
         1、训练模型  
-        python run_lasertagger.py \
-        --training_file=./output/train.tf_record \
-        --eval_file=./output/tune.tf_record \
-        --label_map_file=./output/label_map.txt \
-        --model_config_file=./configs/lasertagger_config.json \
+        python run_lasertagger.py \  
+        --training_file=./output/train.tf_record \  
+        --eval_file=./output/tune.tf_record \  
+        --label_map_file=./output/label_map.txt \  
+        --model_config_file=./configs/lasertagger_config.json \  
         --output_dir=./output/models/wikisplit_experiment_name  \
-        --init_checkpoint=./data/RoBERTa-tiny-clue/bert_model.ckpt \
+        --init_checkpoint=./data/RoBERTa-tiny-clue/bert_model.ckpt \  
         --do_train=true  \
         --do_eval=true \
-        --train_batch_size=256 \
-        --save_checkpoints_steps=200 \
-        --max_seq_length=40 \
-        --num_train_examples=319200 \
+        --train_batch_size=256 \  
+        --save_checkpoints_steps=200 \  
+        --max_seq_length=40 \  
+        --num_train_examples=319200 \  
         --num_eval_examples=5000  
         2、 模型整理  
-        python run_lasertagger.py \
-        --label_map_file=./output/label_map.txt \
-        --model_config_file=./configs/lasertagger_config.json \
-        --output_dir=./output/models/wikisplit_experiment_name \
-        --do_export=true \
+        python run_lasertagger.py \  
+        --label_map_file=./output/label_map.txt \  
+        --model_config_file=./configs/lasertagger_config.json \  
+        --output_dir=./output/models/wikisplit_experiment_name \  
+        --do_export=true \  
         --export_path=./output/models/wikisplit_experiment_name  
     第五步 根据test文件进行预测  
-        python predict_main.py \
-        --input_file=./data/test.txt \
-        --input_format=wikisplit \
-        --output_file=./output/models/wikisplit_experiment_name/pred.tsv \
+        python predict_main.py \  
+        --input_file=./data/test.txt \  
+        --input_format=wikisplit \  
+        --output_file=./output/models/wikisplit_experiment_name/pred.tsv \  
         --label_map_file=./output/label_map.txt  \
-        --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \
+        --vocab_file=./data/RoBERTa-tiny-clue/vocab.txt \  
         --max_seq_length=40 \
         --saved_model=./output/models/wikisplit_experiment_name/1587693553  
         # 解析，这应该是最后保存的模型文件名称 可以考如下语句获得     
@@ -116,7 +116,7 @@ Exact　score=15,SARI score=61.5,KEEP score=93,ADDITION score=32,DELETION score=
 2. 在自己构造的中文数据集训练文本复述模型：  
 （1）语料来源  
 （A）一部分语料来自于LCQMC语料中的正例，即语义接近的一对文本；  
-（B）另一部分语料来自于宝安机场用户QA下面同一答案的问题。; 
+（B）另一部分语料来自于宝安机场用户QA下面同一答案的问题。;   
 因为模型的原理，要求文本A和B在具有一定的重合字数，故过滤掉上述两个来源中字面表述差异大的文本，如“我要去厕所”与“卫生间在哪里”。对语料筛选后对模型进行训练和测试。  
 （2）测试结果：  
 对25918对文本进行复述和自动化评估，评测分数如下（越高越好）：  
@@ -136,129 +136,85 @@ CPU上耗时0.5小时，平均复述一句话需要0.72秒。
 
 六.数据集  
 1.由于不少人咨询我数据集的问题，现将数据集地址贴在下面  
-You can download LCQMC data set from https://download.csdn.net/download/tcd1112/12357994 ,But other data is the company data can't give you.
+You can download LCQMC data set from https://download.csdn.net/download/tcd1112/12357994 ,But other data is the company data can't give you.  
 You can also leave your E-mail, I will send you LCQMC data  
 
 七.文件 tree树如下：  
 文件框架格局如下：  
-	├── chat_rephrase  
-	│   ├── __init__.py  
-	│   ├── predict_for_chat.py  
-	│   └── score_for_qa.txt  
-	├── configs  
-	│   ├── lasertagger_config_base.json  
-	│   └── lasertagger_config.json  
-	├── data  
-	│   ├── LCQMC  
-	│   │   ├── dev.txt  
-	│   │   ├── test.txt  
-	│   │   └── train.txt  
-	│   ├── lcqmc.txt  
-	│   ├── QQ  
-	│   │   └── Q_Q.txt  
-	│   ├── QQ.txt  
-	│   ├── RoBERTa-tiny-clue  
-	│   │   ├── bert_config.json  
-	│   │   ├── bert_model.ckpt.data-00000-of-00001  
-	│   │   ├── bert_model.ckpt.index  
-	│   │   ├── bert_model.ckpt.meta  
-	│   │   ├── checkpoint  
-	│   │   └── vocab.txt  
-	│   ├── test.txt  
-	│   ├── train.txt  
-	│   └── tune.txt  
-	├── domain_rephrase  
-	│   ├── __init__.py  
-	│   ├── predict_for_domain.py  
-	│   └── rephrase_for_domain.sh  
-	├── get_pairs_chinese  
-	│   ├── curLine_file.py  
-	│   ├── get_text_pair_lcqmc.py  
-	│   ├── get_text_pair.py  
-	│   ├── get_text_pair_sv.py  
-	│   ├── __init__.py  
-	│   ├── merge_split_corpus.py  
-	├── official_transformer  
-	│   ├── attention_layer.py  
-	│   ├── beam_search.py  
-	│   ├── embedding_layer.py  
-	│   ├── ffn_layer.py  
-	│   ├── __init__.py  
-	│   ├── model_params.py  
-	│   ├── model_utils.py  
-	│   ├── tpu.py  
-	│   └── transformer.py  
-	├── output  
-	│   ├── label_map.txt  
-	│   ├── label_map.txt.log  
-	│   ├── models  
-	│   │   └── wikisplit_experiment_name  
-	│   │       ├── 1587693553  
-	│   │       │   ├── saved_model.pb  
-	│   │       │   └── variables  
-	│   │       │       ├── variables.data-00000-of-00001  
-	│   │       │       └── variables.index  
-	│   │       ├── checkpoint  
-	│   │       ├── events.out.tfevents.1587638931.tcd-All-Series  
-	│   │       ├── graph.pbtxt  
-	│   │       ├── model.ckpt-3643.data-00000-of-00001  
-	│   │       ├── model.ckpt-3643.index  
-	│   │       ├── model.ckpt-3643.meta  
-	│   │       └── pred.tsv  
-	│   ├── train.tf_record  
-	│   ├── train.tf_record.num_examples.txt  
-	│   ├── tune.tf_record  
-	│   └── tune.tf_record.num_examples.txt  
-	├── qa_rephrase  
-	│   ├── __init__.py  
-	│   └── predict_for_qa.py  
-	├── rephrase_server  
-	│   ├── __init__.py  
-	│   ├── rephrase_server_flask.py  
-	│   └── test_server.py  
-	├── skill_rephrase  
-	│   ├── __init__.py  
-	│   └── predict_for_skill.py  
-	├── __init__.py  
-	├── AR_architecture.png  
-	├── bert_example.py  
-	├── bert_example_test.py  
-	├── compute_lcs.py  
-	├── config.json  
-	├── CONTRIBUTING.md  
-	├── curLine_file.py  
-	├── LICENSE  
-	├── phrase_vocabulary_optimization1.py  
-	├── phrase_vocabulary_optimizationdada.py  
-	├── phrase_vocabulary_optimization_test.py  
-	├── prediction.txt  
-	├── predict_main.py  
-	├── predict_utils.py  
-	├── predict_utils_test.py  
-	├── preprocess_main.py  
-	├── README.md  
-	├── rephrase_for_chat.sh  
-	├── rephrase_for_qa.sh  
-	├── rephrase_for_skill.sh  
-	├── rephrase_server.sh  
-	├── rephrase.sh  
-	├── requirements.txt  
-	├── run_lasertagger.py  
-	├── run_lasertagger_test.py  
-	├── run_lasertagger_utils.py  
-	├── run_lasertagger_utils_test.py  
-	├── sari_hook.py  
-	├── score_lib.py  
-	├── score_lib_test.py  
-	├── score_main.py  
-	├── sentence_fusion_task.png  
-	├── tagging_converter.py  
-	├── tagging_converter_test.py  
-	├── tagging.py  
-	├── tagging_test.py  
-	├── train.txt  
-	├── transformer_decoder.py  
-	├── tune.txt  
-	├── utils.py  
-	└── utils_test.py  
+├── chat_rephrase    
+│   ├── __init__.py    
+│   ├── predict_for_chat.py    
+│   └── score_for_qa.txt    
+├── configs    
+│   ├── lasertagger_config_base.json    
+│   └── lasertagger_config.json    
+├── data    
+│   ├── LCQMC    
+│   │   ├── dev.txt    
+│   │   ├── test.txt    
+│   │   └── train.txt    
+│   └── QQ    
+│       └── Q_Q.txt    
+├── domain_rephrase    
+│   ├── __init__.py    
+│   ├── predict_for_domain.py    
+│   └── rephrase_for_domain.sh    
+├── get_pairs_chinese    
+│   ├── curLine_file.py    
+│   ├── get_text_pair_lcqmc.py    
+│   ├── get_text_pair.py    
+│   ├── get_text_pair_shixi.py    
+│   ├── get_text_pair_sv.py    
+│   ├── __init__.py    
+│   └── merge_split_corpus.py    
+├── official_transformer    
+│   ├── attention_layer.py    
+│   ├── beam_search.py    
+│   ├── embedding_layer.py    
+│   ├── ffn_layer.py    
+│   ├── __init__.py    
+│   ├── model_params.py    
+│   ├── model_utils.py    
+│   ├── README    
+│   ├── tpu.py    
+│   └── transformer.py    
+├── qa_rephrase    
+│   ├── __init__.py    
+│   └── predict_for_qa.py    
+├── rephrase_server    
+│   ├── __init__.py    
+│   ├── rephrase_server_flask.py    
+│   └── test_server.py    
+├── skill_rephrase    
+│   ├── __init__.py    
+│   └── predict_for_skill.py    
+├── AR_architecture.png    
+├── bert_example.py    
+├── compute_lcs.py    
+├── CONTRIBUTING.md    
+├── curLine_file.py    
+├── __init__.py    
+├── LICENSE    
+├── output    
+├── phrase_vocabulary_optimization.py    
+├── prediction.txt    
+├── predict_main.py    
+├── predicts.py    
+├── predict_utils.py    
+├── preprocess_main.py    
+├── README.md    
+├── rephrase.sh    
+├── requirements.txt    
+├── run_lasertagger.py    
+├── run_lasertagger_utils.py    
+├── sari_hook.py    
+├── score_lib.py    
+├── score_main.py    
+├── sentence_fusion_task.png    
+├── tagging_converter.py    
+├── tagging.py    
+├── transformer_decoder.py    
+└── utils.py    
+
+
 
