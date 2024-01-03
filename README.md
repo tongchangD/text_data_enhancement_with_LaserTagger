@@ -141,6 +141,7 @@ You can also leave your E-mail, I will send you LCQMC data
 
 七.文件 tree树如下：  
 文件框架格局如下：  
+```
 ├── chat_rephrase    
 │   ├── __init__.py    
 │   ├── predict_for_chat.py    
@@ -214,7 +215,10 @@ You can also leave your E-mail, I will send you LCQMC data
 ├── tagging_converter.py    
 ├── tagging.py    
 ├── transformer_decoder.py    
-└── utils.py    
+└── utils.py
+```
 
 
+## Star History
 
+[![Star History Chart](https://api.star-history.com/svg?repos=tongchangD/text_data_enhancement_with_LaserTagger&type=Date)](https://star-history.com/#tongchangD/text_data_enhancement_with_LaserTagger&Date)
